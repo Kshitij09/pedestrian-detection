@@ -1,6 +1,6 @@
 import pandas as pd
 import os
-from parser import VocParser
+from peddet.parser import VocParser
 from dataclasses import asdict
 from copy import copy
 import pandas as pd
@@ -60,7 +60,7 @@ def create_folds_data(source_fname: str):
     df_folds.loc[:,'box_count'] = 1
     df_folds = df_folds.groupby('id').count()
 
-    # Media of 'Area': Second parameter for the split
+    # Median of 'Area': Second parameter for the split
     df_folds.loc[:,'area'] = marking[['id','area']]\
         .groupby('id')\
         .median()['area']
@@ -125,7 +125,8 @@ def perform_split(source_fname: str):
         val_ids = image_ids[val_idx]
         df_folds.loc[df_folds['id'].isin(val_ids),'fold'] = idx+1
 
-    final_df = pd.merge(marking,df_folds[['id','fold']],on='id')
+    final_df = pd.merge(marking,df_folds[['id','fold','area']],on='id')
+    final_df = final_df.reindex(columns=['id','filename','label','area','box','fold'])
     final_df.to_csv(f'{source_fname}_with_folds.csv', index=False)
 
 if __name__ == "__main__":
