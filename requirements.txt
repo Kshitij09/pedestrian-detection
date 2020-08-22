@@ -1,4 +1,7 @@
-pandas==1.0.4
+opencv_python==4.2.0.34
 numpy==1.19.1
+pandas==1.0.4
+albumentations==0.4.6
 iterative_stratification==0.1.6
+torch==1.6.0
 dataclasses==0.7
