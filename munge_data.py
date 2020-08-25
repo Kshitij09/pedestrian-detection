@@ -106,7 +106,7 @@ def create_csv(target_dir: str, output: str):
     extract_fid = partial(extract_id,pat=pat)
 
     dataframe['id'] = dataframe['filename'].apply(extract_fid)
-    dataframe = dataframe.reindex(columns=['id','filename','label','box'])
+    dataframe = dataframe.reindex(columns=['id','filename','label','width','height','box'])
     dataframe.to_csv(f'{output}.csv', index=False)
 
 def perform_split(source_fname: str):
@@ -126,7 +126,7 @@ def perform_split(source_fname: str):
         df_folds.loc[df_folds['id'].isin(val_ids),'fold'] = idx+1
 
     final_df = pd.merge(marking,df_folds[['id','fold','area']],on='id')
-    final_df = final_df.reindex(columns=['id','filename','label','area','box','fold'])
+    final_df = final_df.reindex(columns=['id','filename','label','width','height','area','box','fold'])
     final_df.to_csv(f'{source_fname}_with_folds.csv', index=False)
 
 if __name__ == "__main__":

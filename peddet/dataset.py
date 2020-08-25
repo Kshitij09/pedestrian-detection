@@ -5,6 +5,7 @@ from torch.utils.data import Dataset, DataLoader
 from albumentations.core.composition import Compose
 from typing import Tuple,List,Dict
 import os
+from pathlib import Path
 import cv2
 import pdb
 
@@ -94,11 +95,12 @@ class PennFudanDataset(Dataset):
         Arguments:
             index (int): item index
         Returns:
-            item (Dict): item dict with keys
-            ['image','target','image_id'] 
+            image (Tensor): preprocessed image tensor
+            target (Dict): target dict compatible for coco evaluation
+            image_id (str): image-id for logging purposes
         """
 
-        image_id = self.image_ids[index].split('.')[0]
+        image_id = Path(self.image_ids[index]).stem
 
         # For test-dataset
         target = {'labels': torch.as_tensor([[0]], dtype=torch.int64),
@@ -126,11 +128,9 @@ class PennFudanDataset(Dataset):
                 'bboxes': target['boxes'],
                 'labels': target['labels']
             }
-            image = self.transforms(**image_dict)['image']
-        
-        data = {'image': image, 'target': target, 'image_id': image_id}
+            image = self.transforms(**image_dict)['image']        
 
-        return data
+        return image, target, image_id
     
     def __len__(self) -> int:
         return len(self.image_ids)
