@@ -1,0 +1,2 @@
+defaults:
+  - aug: to_tensor
