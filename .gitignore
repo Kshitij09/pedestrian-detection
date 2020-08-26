@@ -142,3 +142,6 @@ cython_debug/
 
 # dataset directory
 PennFudanPed/
+
+# hydra outputs
+outputs/

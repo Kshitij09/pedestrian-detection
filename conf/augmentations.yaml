@@ -1,0 +1,41 @@
+# @package _global_
+albu_tfms_path: albumentations.augmentations.transforms
+
+aug:
+  hue_sat:
+    _target_: ${albu_tfms_path}.HueSaturationValue
+    brightness_limit: 0.2
+    contrast_limit: 0.2
+    p: 0.9
+
+  brightness_contrast:
+    _target_: ${albu_tfms_path}.RandomBrightnessContrast
+    brightness_limit: 0.2
+    contrast_limit: 0.2
+    p: 0.9
+
+  to_gray:
+    _target_: ${albu_tfms_path}.ToGray
+    p: 0.01
+
+  flip:
+    _target_: ${albu_tfms_path}.Flip
+    always_apply: true
+
+  cutout:
+    _target_: ${albu_tfms_path}.Cutout
+    num_holes: 8
+    max_h_size: 64
+    max_w_size: 64
+    fill_value: 0
+    p: 0.5
+
+  to_tensor:
+    _target_: ${albu_tfms_path}.ToTensorV2
+    always_apply: true
+
+  bbox_params:
+    _target_: albumentations.core.composition.BboxParams
+    format: pascal_voc
+    label_fields:
+      - labels
