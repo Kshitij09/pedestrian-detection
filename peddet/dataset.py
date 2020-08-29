@@ -34,7 +34,6 @@ class PennFudanDataset(Dataset):
         self.class_to_idx = class_to_idx
         if self.df is not None:
             self.image_ids = self.df['id'].unique()
-            
             # DataFrame should have 'x','y','x1','y1' and 'area' keys
             _rec = self.df.iloc[0]
             assert {'x','y','x1','y1','area','label'} <= set(_rec.to_dict()),\

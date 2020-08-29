@@ -18,15 +18,19 @@ aug:
       _target_: albumentations.augmentations.transforms.ToGray
       p: 0.01
 
-    flip:
-      _target_: albumentations.augmentations.transforms.Flip
-      always_apply: true
+    horizontal_flip:
+      _target_: albumentations.augmentations.transforms.HorizontalFlip
+      p: 0.5
 
-    cutout:
-      _target_: albumentations.augmentations.transforms.Cutout
-      num_holes: 8
-      max_h_size: 64
-      max_w_size: 64
+    vertical_flip:
+      _target_: albumentations.augmentations.transforms.VerticalFlip
+      p: 0.5
+
+    coarse_dropout:
+      _target_: albumentations.augmentations.transforms.CoarseDropout
+      min_holes: 8
+      max_height: 16
+      max_width: 16
       fill_value: 0
       p: 0.5
 

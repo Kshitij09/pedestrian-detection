@@ -145,3 +145,4 @@ PennFudanPed/
 
 # hydra outputs
 outputs/
+.vim/
