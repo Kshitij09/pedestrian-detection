@@ -1,0 +1,41 @@
+# Manifest syntax https://docs.python.org/2/distutils/sourcedist.html
+graft wheelhouse
+
+recursive-exclude __pycache__  *.py[cod] *.orig
+
+# Include the README and CHANGELOG
+include *.md
+recursive-include peddet *.md
+
+# Include the license file
+include LICENSE
+
+exclude *.sh
+exclude *.toml
+exclude *.svg
+
+# exclude tests from package
+recursive-exclude tests *
+recursive-exclude site *
+exclude tests
+
+# Exclude the documentation files
+recursive-exclude docs *
+exclude docs
+
+# Include Hydra config
+recursive-include peddet *.yaml
+
+# Include the Requirements
+include requirements.txt
+
+# Exclude build configs (Commenting out to confirm no conflicts with hydra)
+# exclude *.yml
+
+prune .git
+prune .github
+prune .circleci
+prune notebook*
+prune temp*
+prune test*
+prune benchmark*
