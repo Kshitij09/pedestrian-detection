@@ -1,7 +1,11 @@
 opencv_python==4.2.0.34
 numpy==1.19.1
+torch==1.6.0
+omegaconf==2.0.1rc12
 pandas==1.0.4
+pytorch_lightning==0.9.0
 albumentations==0.4.6
 iterative_stratification==0.1.6
-torch==1.6.0
+hydra_core==1.0.0rc4
 dataclasses==0.7
+hydra==2.5
