@@ -141,7 +141,7 @@ cython_debug/
 .vscode/
 
 # dataset directory
-PennFudanPed/
+data/raw/PennFudanPed/
 
 # hydra outputs
 outputs/
