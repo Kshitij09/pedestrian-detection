@@ -152,6 +152,28 @@ def perform_split(source_fname: str):
     final_df.to_csv(f"{source_fname}_with_folds.csv", index=False)
 
 
+_default_sample_dir = "data/raw/sample/PennFudanPed/PNGImages/"
+_default_csv_dir = "data/processed/data_with_folds.csv"
+_default_output_dir = "data/processed/sample.csv"
+
+
+def create_sample_csv(
+    sample_image_dir: str = _default_sample_dir,
+    original_csv: str = _default_csv_dir,
+    output_path: str = _default_output_dir,
+):
+    df = pd.read_csv(original_csv)
+    filenames = os.listdir(sample_image_dir)
+    filenames = list(
+        map(lambda x: os.path.join("PennFudanPed", "PNGImages", x), filenames)
+    )
+    df = df.loc[df.filename.isin(filenames)]
+    # Assuming 0 being validation fold
+    df.loc[df.id.str.startswith("F"), "fold"] = 0
+    df.loc[df.id.str.startswith("P"), "fold"] = 1
+    df.to_csv(output_path, index=False)
+
+
 if __name__ == "__main__":
     args = parser.parse_args()
     create_csv(args.target_dir, args.fname)

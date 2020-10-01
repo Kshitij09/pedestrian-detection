@@ -1,0 +1,6 @@
+# @package _group_
+csv_path: data/processed/sample.csv
+root_dir: data/raw/sample
+valid_fold: 0
+num_workers: 1
+batch_size: 4
