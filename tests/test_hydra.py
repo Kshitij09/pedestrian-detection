@@ -8,6 +8,7 @@ from albumentations.core.composition import Compose
 import albumentations as A
 
 
+@pytest.mark.timeout(30)
 def test_hydra_aug_instantiate():
     "Assert hydra instantiation works"
     with initialize(config_path="../peddet/conf"):
@@ -16,12 +17,14 @@ def test_hydra_aug_instantiate():
         assert isinstance(obj, A.ToGray)
 
 
+@pytest.mark.timeout(30)
 def test_hydra_init():
     "Assert no exception raised while initializing config"
     with initialize(config_path="../peddet/conf"):
         cfg = compose(config_name="config")
 
 
+@pytest.mark.timeout(30)
 def test_albumentations_compose():
     "Assert no exception raised while composing albumentations"
     with initialize(config_path="../peddet/conf"):
