@@ -2,10 +2,12 @@ import re
 from dataclasses import dataclass
 from typing import List
 
+
 @dataclass
 class Bbox:
     label: str
     coord: List[int]
+
 
 @dataclass
 class VocResult:
@@ -14,45 +16,47 @@ class VocResult:
     height: int
     boxes: List[Bbox]
 
+
 class VocParser:
     # Filename
-    _fname_pattern = r'Image filename : \"(.+)\"'
-    _re_fname = re.compile(_fname_pattern)        
+    _fname_pattern = r"Image filename : \"(.+)\""
+    _re_fname = re.compile(_fname_pattern)
 
     # Image size
-    _size_pattern = r'Image size \(X x Y x C\) : (\d+) x (\d+) x \d+'
+    _size_pattern = r"Image size \(X x Y x C\) : (\d+) x (\d+) x \d+"
     _re_size = re.compile(_size_pattern)
 
     # Bouding boxes
-    _bbox_pattern = r'Bounding box for object \d+ \"(\w+)\" \(Xmin, Ymin\) - \(Xmax, Ymax\) : \((\d+), (\d+)\) - \((\d+), (\d+)\)'
+    _bbox_pattern = r"Bounding box for object \d+ \"(\w+)\" \(Xmin, Ymin\) - \(Xmax, Ymax\) : \((\d+), (\d+)\) - \((\d+), (\d+)\)"
     _re_bbox = re.compile(_bbox_pattern)
-    
+
     @classmethod
     def get_filename(cls, string: str):
         return cls._re_fname.search(string).group(1)
-    
+
     @classmethod
     def get_image_size(cls, string: str):
         match = cls._re_size.search(string)
-        width,height = match.group(1), match.group(2)
+        width, height = match.group(1), match.group(2)
         return (width, height)
-    
+
     @classmethod
     def get_bouding_boxes(cls, string: str):
         matches = cls._re_bbox.findall(string)
-        
+
         def proc_coord(coords: List):
             return [int(x) for x in coords]
-        
-        boxes = [Bbox(m[0],proc_coord(m[1:])) for m in matches]
+
+        boxes = [Bbox(m[0], proc_coord(m[1:])) for m in matches]
         return boxes
-    
+
     @classmethod
     def parse(cls, string: str):
-        filename =  cls.get_filename(string)
-        width,height = cls.get_image_size(string)
+        filename = cls.get_filename(string)
+        width, height = cls.get_image_size(string)
         boxes = cls.get_bouding_boxes(string)
-        return VocResult(filename,width,height,boxes)    
+        return VocResult(filename, width, height, boxes)
+
 
 # ann_sample = r"""
 # # Compatible with PASCAL Annotation Version 1.00
