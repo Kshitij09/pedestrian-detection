@@ -2,7 +2,8 @@ defaults:
   - augmentations
 
 data:
-  csv_path: data_with_folds.csv
+  csv_path: data/processed/data_with_folds.csv
+  root_dir: data/raw
   valid_fold: 2
   num_workers: 4
   batch_size: 12

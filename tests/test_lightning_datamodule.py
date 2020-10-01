@@ -4,7 +4,7 @@ from hydra.experimental import initialize, compose
 
 def test_datamodule_init():
     "Assert no exception raised while initializing lightning datamodule"
-    with initialize(config_path='../conf'):
+    with initialize(config_path='../peddet/conf'):
         cfg = compose(config_name='config')
         train_transforms = TrainTransforms(cfg.aug)
         val_transforms = ValTransforms(cfg.aug)
@@ -17,7 +17,7 @@ def test_train_dataloader():
     """Assert no exception raised while instantiating train dataloder
        and reading first batch
     """
-    with initialize(config_path='../conf'):
+    with initialize(config_path='../peddet/conf'):
         cfg = compose(config_name='config')
         train_transforms = TrainTransforms(cfg.aug)
         val_transforms = ValTransforms(cfg.aug)
@@ -30,7 +30,7 @@ def test_val_dataloader():
     """Assert no exception raised while instantiating train dataloder
        and reading first batch
     """
-    with initialize(config_path='../conf'):
+    with initialize(config_path='../peddet/conf'):
         cfg = compose(config_name='config')
         train_transforms = TrainTransforms(cfg.aug)
         val_transforms = ValTransforms(cfg.aug)

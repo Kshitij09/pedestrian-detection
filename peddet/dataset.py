@@ -16,17 +16,17 @@ class PennFudanDataset(Dataset):
     Args:
     dataframe: dataframe with image_ids and bboxes
     mode: train/valid/test
-    image_dir: path to images
+    root_dir: path to root directory for dataset
     transforms: 'albumentations' transforms
     """
 
     def __init__(self,
                  dataframe: pd.DataFrame=None,
-                 image_dir: str = '',
+                 root_dir: str = '',
                  transforms: Compose = None,
                  mode: str = 'train'):
         self.df = dataframe
-        self.image_dir = image_dir
+        self.root_dir = root_dir
         self.mode = mode
         self.transforms = transforms
         classes, class_to_idx = self._find_classes(dataframe)
@@ -39,7 +39,7 @@ class PennFudanDataset(Dataset):
             assert {'x','y','x1','y1','area','label'} <= set(_rec.to_dict()),\
             "DataFrame should have 'x','y','x1','y1','label' and 'area' keys"
         else:
-            self.image_ids = os.listdir(image_dir)
+            self.image_ids = os.listdir(root_dir)
 
     def _find_classes(self, df: pd.DataFrame)-> Tuple[List[str], Dict[str,int]]:
         "Extract classes and class_to_idx mapping from dataframe"
@@ -107,7 +107,7 @@ class PennFudanDataset(Dataset):
 
         if self.mode != 'test':
             image_data = self.df.loc[self.df['id']==image_id]
-            path = os.path.join(self.image_dir, image_data.filename.min())
+            path = os.path.join(self.root_dir, image_data.filename.min())
             image = self.get_image(path)
             target = self.coco_prepare(image_data,index)
             if self.transforms:
@@ -120,7 +120,7 @@ class PennFudanDataset(Dataset):
                 image = image_dict['image']
                 target['boxes'] = torch.as_tensor(image_dict['bboxes'],dtype=torch.float32)
         else:
-            path = os.path.join(self.image_dir, self.image_ids[index])
+            path = os.path.join(self.root_dir, self.image_ids[index])
             image = self.get_image(path)
             image_dict = {
                 'image': image,

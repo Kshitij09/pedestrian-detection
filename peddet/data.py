@@ -25,11 +25,11 @@ class PennFudanDataModule(pl.LightningDataModule):
             # Current directory changed!
             # Update paths with original_cwd
             self.data_csv_path = to_absolute_path(cfg.data.csv_path)
-            self.root_dir = get_original_cwd()
+            self.root_dir = to_absolute_path(cfg.data.root_dir)
         else:
             # Keep relative paths
             self.data_csv_path = cfg.data.csv_path
-            self.root_dir = ''
+            self.root_dir = cfg.data.root_dir
     
     def setup(self, stage=None):
         super().setup(stage=stage)
@@ -40,8 +40,8 @@ class PennFudanDataModule(pl.LightningDataModule):
         )
         train_df = df.loc[df['fold'] != cfg.data.valid_fold].copy()
         valid_df = df.loc[df['fold'] == cfg.data.valid_fold].copy()
-        self.train_dataset = PennFudanDataset(train_df,image_dir=self.root_dir,transforms=self.train_transforms,mode='train')
-        self.val_dataset = PennFudanDataset(valid_df,image_dir=self.root_dir,transforms=self.val_transforms,mode='val')
+        self.train_dataset = PennFudanDataset(train_df,root_dir=self.root_dir,transforms=self.train_transforms,mode='train')
+        self.val_dataset = PennFudanDataset(valid_df,root_dir=self.root_dir,transforms=self.val_transforms,mode='val')
     
     def train_dataloader(self):
         data = self.cfg.data
