@@ -11,8 +11,6 @@ def test_datamodule_init():
         val_transforms = ValTransforms(cfg.aug)
         datamodule = PennFudanDataModule(cfg, train_transforms, val_transforms)
         datamodule.setup(stage="fit")
-        train_loader = datamodule.train_dataloader()
-        image, target, image_id = next(iter(train_loader))
 
 
 def test_train_dataloader():
