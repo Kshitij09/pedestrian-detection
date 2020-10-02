@@ -1,0 +1,2 @@
+[report]
+omit = peddet/utils/munge_data.py, peddet/utils/parser.py, *__init__.py

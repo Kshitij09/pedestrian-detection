@@ -1,6 +1,6 @@
 import pandas as pd
 import os
-from peddet.parser import VocParser
+from peddet.utils.parser import VocParser
 from dataclasses import asdict
 from copy import copy
 import pandas as pd
