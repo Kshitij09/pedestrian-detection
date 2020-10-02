@@ -16,7 +16,7 @@ def test_datamodule_init():
         datamodule.setup(stage="fit")
 
 
-@pytest.mark.timeout(2)
+@pytest.mark.timeout(6)
 def test_train_dataloader():
     """Assert no exception raised while instantiating train dataloder
     and reading first batch
@@ -31,7 +31,7 @@ def test_train_dataloader():
         images, targets, image_ids = next(iter(train_loader))
 
 
-@pytest.mark.timeout(2)
+@pytest.mark.timeout(6)
 def test_val_dataloader():
     """Assert no exception raised while instantiating val dataloder
     and reading first batch
