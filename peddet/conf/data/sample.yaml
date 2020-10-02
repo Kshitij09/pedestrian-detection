@@ -2,5 +2,5 @@
 csv_path: data/processed/sample.csv
 root_dir: data/raw/sample
 valid_fold: 0
-num_workers: 1
+num_workers: 0
 batch_size: 4
