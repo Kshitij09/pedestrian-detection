@@ -32,9 +32,6 @@ class PennFudanDataset(Dataset):
         self.root_dir = root_dir
         self.mode = mode
         self.transforms = transforms
-        classes, class_to_idx = self._find_classes(dataframe)
-        self.classes = classes
-        self.class_to_idx = class_to_idx
         if self.df is not None:
             self.image_ids = self.df["id"].unique()
             # DataFrame should have 'x','y','x1','y1' and 'area' keys
@@ -42,6 +39,10 @@ class PennFudanDataset(Dataset):
             assert {"x", "y", "x1", "y1", "area", "label"} <= set(
                 _rec.to_dict()
             ), "DataFrame should have 'x','y','x1','y1','label' and 'area' keys"
+
+            classes, class_to_idx = self._find_classes(dataframe)
+            self.classes = classes
+            self.class_to_idx = class_to_idx
         else:
             self.image_ids = os.listdir(root_dir)
 
