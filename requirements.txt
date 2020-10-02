@@ -10,3 +10,4 @@ pytorch_lightning==0.9.0
 iterative_stratification==0.1.6
 dataclasses>='0.7'; python_version < '3.7'
 hydra==2.5
+pycocotools==2.0.2
