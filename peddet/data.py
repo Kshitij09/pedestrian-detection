@@ -38,7 +38,18 @@ class PennFudanDataModule(pl.LightningDataModule):
     def setup(self, stage=None):
         super().setup(stage=stage)
         cfg = self.cfg
-        df = pd.read_csv(self.data_csv_path)
+
+        if HydraConfig.initialized():
+            # Current directory changed!
+            # Update paths with original_cwd
+            csv_path = to_absolute_path(cfg.data.csv_path)
+            root_dir = to_absolute_path(cfg.data.root_dir)
+        else:
+            # Keep relative paths
+            csv_path = cfg.data.csv_path
+            root_dir = cfg.data.root_dir
+
+        df = pd.read_csv(csv_path)
         df[["x", "y", "x1", "y1"]] = pd.DataFrame(
             np.stack(df["box"].apply(ast.literal_eval)).astype(np.float32)
         )
@@ -46,12 +57,12 @@ class PennFudanDataModule(pl.LightningDataModule):
         valid_df = df.loc[df["fold"] == cfg.data.valid_fold].copy()
         self.train_dataset = PennFudanDataset(
             train_df,
-            root_dir=self.root_dir,
+            root_dir=root_dir,
             transforms=self.train_transforms,
             mode="train",
         )
         self.val_dataset = PennFudanDataset(
-            valid_df, root_dir=self.root_dir, transforms=self.val_transforms, mode="val"
+            valid_df, root_dir=root_dir, transforms=self.val_transforms, mode="val"
         )
 
     def train_dataloader(self):
