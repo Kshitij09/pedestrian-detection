@@ -1,6 +1,7 @@
 from peddet.transforms import TrainTransforms, ValTransforms
 from peddet.data import PennFudanDataModule
 from hydra.experimental import initialize, compose
+import torch
 import pytest
 
 
@@ -27,12 +28,12 @@ def test_train_dataloader():
         datamodule = PennFudanDataModule(cfg, train_transforms, val_transforms)
         datamodule.setup(stage="fit")
         train_loader = datamodule.train_dataloader()
-        image, target, image_id = next(iter(train_loader))
+        images, targets, image_ids = next(iter(train_loader))
 
 
 @pytest.mark.timeout(2)
 def test_val_dataloader():
-    """Assert no exception raised while instantiating train dataloder
+    """Assert no exception raised while instantiating val dataloder
     and reading first batch
     """
     with initialize(config_path="../peddet/conf"):
@@ -40,6 +41,6 @@ def test_val_dataloader():
         train_transforms = TrainTransforms(cfg.aug)
         val_transforms = ValTransforms(cfg.aug)
         datamodule = PennFudanDataModule(cfg, train_transforms, val_transforms)
-        datamodule.setup(stage="fit")
+        datamodule.setup(stage="test")
         val_loader = datamodule.val_dataloader()
-        image, target, image_id = next(iter(val_loader))
+        images, targets, image_ids = next(iter(val_loader))
