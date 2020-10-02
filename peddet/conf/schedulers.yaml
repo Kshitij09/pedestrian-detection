@@ -1,0 +1,17 @@
+# @package _global_
+sched:
+  lr_plateau:
+    step: epoch
+    monitor: ${training.monitor}
+    params:
+      mode: ${training.mode}
+      factor: 0.05
+      patience: 5
+      min_lr: 1e-6
+      verbose: True
+
+  cosine_anneal:
+    step: epoch
+    monitor: ${training.monitor}
+    params:
+      T_max: 10

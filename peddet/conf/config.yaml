@@ -1,3 +1,9 @@
 defaults:
   - augmentations
+  - optimizers
+  - schedulers
   - data: train
+
+training:
+  mode: min
+  monitor: main_score
