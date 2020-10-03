@@ -7,3 +7,38 @@ defaults:
 training:
   mode: min
   monitor: main_score
+  project: pedestrian-detection
+  exp_name: fasterrcnn-starter
+  version: 0
+  debug: True
+  checkpoint_dir: checkpoints
+  early_stopping: True
+  model_checkpoint: True
+  wandb_logger: True
+
+trainer:
+  gradient_clip_val: 0.5
+  max_epochs: 10
+  gpus: 1
+  weights_summary: null
+
+loggers:
+  wandb:
+    project: ${training.project}
+    name: ${training.exp_name}
+    version: ${training.version}
+
+callbacks:
+  model_checkpoint:
+    save_top_k: 1
+    verbose: True
+    monitor: ${training.monitor}
+    mode: ${training.mode}
+    prefix: ${training.exp_name}
+
+  early_stopping:
+    monitor: ${training.monitor}
+    mode: ${training.mode}
+    min_delta: 1e-3
+    patience: 10
+    verbose: True

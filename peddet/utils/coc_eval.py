@@ -55,6 +55,7 @@ class CocoEvaluator(object):
 
     def accumulate(self):
         for coco_eval in self.coco_eval.values():
+            # Added evaluate() here
             coco_eval.evaluate()
             coco_eval.accumulate()
 
