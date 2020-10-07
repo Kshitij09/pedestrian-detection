@@ -70,7 +70,13 @@ def all_gather(data):
     return data_list
 
 
-class IOU_TYPES:
+def to_numpy(x: torch.Tensor, permute=True):
+    if permute:
+        x = x.permute(1, 2, 0)
+    return x.cpu().detach().numpy()
+
+
+class IouTypes:
     BBOX = "bbox"
     MASK = "segm"
     KEYPOINT = "keypoints"
@@ -79,9 +85,7 @@ class IOU_TYPES:
 # Borrowed from
 # https://github.com/Erlemar/wheat/blob/54d253cc7ff559bebc1056dca8b5b058fb75fc9f/src/utils/utils.py#L110
 def flatten_omegaconf(d, sep="_"):
-
     d = OmegaConf.to_container(d)
-
     obj = collections.OrderedDict()
 
     def recurse(t, parent_key=""):

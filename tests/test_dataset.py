@@ -25,7 +25,7 @@ def test_train_dataset():
             mode="train",
         )
 
-        image, target, image_id = train_dataset[0]
+        image, target = train_dataset[0]
         required_keys = ["boxes", "labels", "image_id", "area", "iscrowd"]
         assert isinstance(image, torch.Tensor)
         assert list(target.keys()) == required_keys
@@ -49,7 +49,7 @@ def test_val_dataset():
             mode="val",
         )
 
-        image, target, image_id = valid_dataset[0]
+        image, target = valid_dataset[0]
         required_keys = ["boxes", "labels", "image_id", "area", "iscrowd"]
         assert isinstance(image, torch.Tensor)
         assert list(target.keys()) == required_keys

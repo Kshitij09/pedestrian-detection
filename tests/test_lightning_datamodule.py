@@ -28,7 +28,7 @@ def test_train_dataloader():
         datamodule = PennFudanDataModule(cfg, train_transforms, val_transforms)
         datamodule.setup(stage="fit")
         train_loader = datamodule.train_dataloader()
-        images, targets, image_ids = next(iter(train_loader))
+        images, targets = next(iter(train_loader))
 
 
 @pytest.mark.timeout(6)
@@ -43,4 +43,4 @@ def test_val_dataloader():
         datamodule = PennFudanDataModule(cfg, train_transforms, val_transforms)
         datamodule.setup(stage="test")
         val_loader = datamodule.val_dataloader()
-        images, targets, image_ids = next(iter(val_loader))
+        images, targets = next(iter(val_loader))

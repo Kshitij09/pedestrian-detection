@@ -138,7 +138,7 @@ class PennFudanDataset(Dataset):
             }
             image = self.transforms(**image_dict)["image"]
 
-        return image, target, image_id
+        return image, target
 
     def __len__(self) -> int:
         return len(self.image_ids)
