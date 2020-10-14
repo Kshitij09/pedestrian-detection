@@ -14,10 +14,13 @@ jobs:
   pytest:
     runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
-        os: [ubuntu-20.04, macOS-10.15, windows-2019]
-        python-version: [3.6, 3.7, 3.8]
+        os: [ubuntu-latest, macOS-10.15, windows-2019]
+        python-version: [3.8]
+        include:
+          os: ubuntu-latest
+          python-version: [3.6,3.7,3.9]
 
     # Timeout: https://stackoverflow.com/a/59076067/4521646
     timeout-minutes: 35
