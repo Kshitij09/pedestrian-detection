@@ -1,4 +1,4 @@
-name: CI testing
+name: tests
 
 # see: https://help.github.com/en/actions/reference/events-that-trigger-workflows
 on:
@@ -19,8 +19,10 @@ jobs:
         os: [ubuntu-latest, macOS-10.15, windows-2019]
         python-version: [3.8]
         include:
-          os: ubuntu-latest
-          python-version: [3.6,3.7,3.9]
+          - os: ubuntu-latest
+            python-version: 3.6
+          - os: ubuntu-latest
+            python-version: 3.7            
 
     # Timeout: https://stackoverflow.com/a/59076067/4521646
     timeout-minutes: 35
