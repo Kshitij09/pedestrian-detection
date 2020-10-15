@@ -1,34 +1,30 @@
-import hydra
-from omegaconf import DictConfig, OmegaConf
+from omegaconf import DictConfig
 from hydra.utils import instantiate
-from hydra.experimental import initialize, compose
-import pytest
-from albumentations.core.composition import BboxParams
 from albumentations.core.composition import Compose
 import albumentations as A
+import warnings
+
+# Ignoring Tensorboard DeprecationWarning for tensorboard's FieldDescriptor()
+warnings.filterwarnings(action="ignore", module="tensorboard.compat.proto")
+# Ignoring DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc'
+warnings.filterwarnings(
+    action="ignore", module="pytorch_lightning.overrides.data_parallel"
+)
 
 
-def test_hydra_aug_instantiate():
+def test_hydra_aug_instantiate(default_config: DictConfig):
     "Assert hydra instantiation works"
-    with initialize(config_path="../peddet/conf"):
-        cfg = compose(config_name="config")
-        obj = instantiate(cfg.aug.tfms.to_gray)
-        assert isinstance(obj, A.ToGray)
+    cfg = default_config
+    obj = instantiate(cfg.aug.tfms.to_gray)
+    assert isinstance(obj, A.ToGray)
 
 
-def test_hydra_init():
-    "Assert no exception raised while initializing config"
-    with initialize(config_path="../peddet/conf"):
-        cfg = compose(config_name="config")
-
-
-def test_albumentations_compose():
+def test_albumentations_compose(default_config: DictConfig):
     "Assert no exception raised while composing albumentations"
-    with initialize(config_path="../peddet/conf"):
-        aug = compose(config_name="config").aug
-        color_tfms = [aug.tfms.brightness_contrast, aug.tfms.hue_sat]
-        color_transform = A.OneOf([instantiate(tfm) for tfm in color_tfms], p=0.9)
-        transforms = Compose(
-            [instantiate(tfm) for tfm in aug.tfms.values() if tfm not in color_tfms],
-            bbox_params=instantiate(aug.bbox_params),
-        )
+    aug = default_config.aug
+    color_tfms = [aug.tfms.brightness_contrast, aug.tfms.hue_sat]
+    color_transform = A.OneOf([instantiate(tfm) for tfm in color_tfms], p=0.9)
+    transforms = Compose(
+        [instantiate(tfm) for tfm in aug.tfms.values() if tfm not in color_tfms],
+        bbox_params=instantiate(aug.bbox_params),
+    )
