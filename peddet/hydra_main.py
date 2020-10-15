@@ -22,6 +22,7 @@ import wandb
 from torch.utils.data import Dataset
 from omegaconf import DictConfig, OmegaConf
 
+
 def configure_trainer(cfg: DictConfig) -> pl.Trainer:
     # Default values from trainer
     early_stopping = False
@@ -42,7 +43,7 @@ def configure_trainer(cfg: DictConfig) -> pl.Trainer:
         )
 
     if cfg.training.wandb_logger:
-        wandb.login(key=os.environ['WANDB_API_KEY'])
+        wandb.login(key=os.environ["WANDB_API_KEY"])
         logger = WandbLogger(**cfg.loggers.wandb)
 
     trainer = pl.Trainer(
