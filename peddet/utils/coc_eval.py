@@ -14,7 +14,7 @@ import pycocotools.mask as mask_util
 
 from collections import defaultdict
 
-from peddet.utils import utils
+import peddet.utils.coco_utils as utils
 
 
 class CocoEvaluator(object):
