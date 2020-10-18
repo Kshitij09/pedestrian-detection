@@ -18,7 +18,8 @@ from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint
 from pytorch_lightning.loggers import WandbLogger
 import hydra
 import torch
-import wandb
+import importlib
+import logging
 from torch.utils.data import Dataset
 from omegaconf import DictConfig, OmegaConf
 
@@ -43,8 +44,23 @@ def configure_trainer(cfg: DictConfig) -> pl.Trainer:
         )
 
     if cfg.training.wandb_logger:
-        wandb.login(key=os.environ["WANDB_API_KEY"])
-        logger = WandbLogger(**cfg.loggers.wandb)
+        try:
+            wandb = importlib.import_module("wandb")
+            SECRET = os.environ["WANDB_API_KEY"]
+            wandb.login(key=SECRET)
+            del SECRET
+            logger = WandbLogger(**cfg.loggers.wandb)
+        except ModuleNotFoundError:
+            print(
+                """
+                You need to install 'wandb' to use this logger.
+                To disable, set training.wandb_logger=False
+                """
+            )
+            sys.exit(1)
+        except KeyError:
+            print("Make sure you've set 'WANDB_API_KEY' environment variable")
+            sys.exit(1)
 
     trainer = pl.Trainer(
         logger=logger,
@@ -87,8 +103,8 @@ def main(cfg: DictConfig) -> None:
         trainer = pl.Trainer(gpus=1, fast_dev_run=True)
         trainer.fit(train_module, datamodule=datamodule)
 
-    trainer = configure_trainer(cfg)
-    trainer.fit(model=train_module, datamodule=datamodule)
+    # trainer = configure_trainer(cfg)
+    # trainer.fit(model=train_module, datamodule=datamodule)
 
 
 if __name__ == "__main__":
